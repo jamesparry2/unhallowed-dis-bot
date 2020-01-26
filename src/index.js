@@ -6,6 +6,7 @@ const client = new Discord.Client();
 client.commands = new Discord.Collection();
 
 const models = require("./database/actions");
+const { databaseCreation } = require("./database");
 
 const isValidCommand = command => client.commands.has(command);
 
@@ -25,6 +26,10 @@ const commandFiles = fs
 commandFiles.forEach(file => {
   const command = require(`./commands/${file}`);
   client.commands.set(command.name, command);
+});
+
+client.once("ready", () => {
+  databaseCreation();
 });
 
 client.on(DISCORD_MESSAGE_COMMAND, message => {

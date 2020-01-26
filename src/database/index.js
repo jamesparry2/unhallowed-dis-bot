@@ -8,11 +8,14 @@ const sequelize = new Sequelize("unhallowed", "user", "password", {
 });
 
 const Character = sequelize.import("model/character");
+const Weapons = sequelize.import("model/weapon");
+const Armour = sequelize.import("model/armour");
 
 // Inserting data on creation
-sequelize.sync({ force: true }).then(async () => {
-  await Character.upsert({ name: "One Point", test: "Hello There" });
-  sequelize.close();
-});
+const databaseCreation = () =>
+  sequelize.sync({ force: true }).then(async () => {
+    await Character.upsert({ name: "One Point", test: "Hello There" });
+    sequelize.close();
+  });
 
-module.exports = { Character };
+module.exports = { databaseCreation, Character, Weapons, Armour };
